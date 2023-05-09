@@ -1,6 +1,6 @@
 # Code Sentinel
 <img src="https://media.licdn.com/dms/image/D4E22AQETiL6b7cRhpw/feedshare-shrink_800/0/1683300138582?e=1686787200&v=beta&t=eBAjkN19uaHzsFo1C63Kd3IBQg8PtW456YBlQYoZyMo"></img>
-This is a code vulnerability analysis program capable of finding code injection, XSS and SQL injection vulnerabilities in source code files. It uses Python's re, tkinter, filedialog, simpledialog, ttk, PIL and ThemedStyle libraries to create a graphical interface and allow user interaction.
+<div style="position:relative;">This is a code vulnerability analysis program capable of finding code injection, XSS and SQL injection vulnerabilities in source code files. It uses Python's re, tkinter, filedialog, simpledialog, ttk, PIL and ThemedStyle libraries to create a graphical interface and allow user interaction.</div>
 
 ## Installation
 It is not necessary to install any additional packages to run the program, as it only uses standard Python libraries.
