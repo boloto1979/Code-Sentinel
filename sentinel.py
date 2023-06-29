@@ -6,190 +6,141 @@ from PIL import Image, ImageTk
 from ttkthemes import ThemedStyle
 import atheris
 import os
-import magic
-import subprocess
+import logging
 
-supported_extensions = ['.py', '.java', '.c', '.cpp', '.rb', '.js', '.html', '.php']
+logging.basicConfig(level=logging.INFO)
 
-path = "/caminho/do/diretorio"
+supported_extensions = ['.py', '.java', '.javascript', '.c', '.cpp', '.rb', '.js', '.html', '.php']
 
-supported_files = []
-for dirpath, _, filenames in os.walk(path):
-    for filename in filenames:
-        file_ext = os.path.splitext(filename)[1]
-        if file_ext in supported_extensions:
-            supported_files.append(os.path.join(dirpath, filename))
+class CodeSentinel:
+    def __init__(self):
+        self.window = tk.Tk()
+        self.window.title("Code Sentinel")
+        self.window.geometry("700x650")
+        self.window.configure(bg="#1c2936")
+        self.result_text = tk.Text(self.window)
+        self.result_text.pack()
 
-if not supported_files:
-    print("Nenhum arquivo encontrado para escanear.")
-else:
-    for file in supported_files:
-        mime = magic.Magic(mime=True)
-        file_type = mime.from_file(file)
+        self.style = ThemedStyle(self.window)
+        self.style.set_theme("clam")
+        self.style = ttk.Style(self.window)
+        self.style.configure("TButton",
+                             background="black",
+                             foreground="white",
+                             )
+        self.file_button = ttk.Button(self.window, text="Anexar Arquivo", command=self.open_file, style="TButton")
+        self.file_button.pack()
 
-        if file_type.startswith('text/'):
-            subprocess.run(['bandit', '-r', '-ll', '-ii', '-s', 'B104', file])
-        else:
-            print(f"Não é possível escanear o arquivo {file}, pois não é um arquivo de texto.")
-
-def find_code_injection_vulnerabilities(code):
-    pattern = r'eval\s*\(|exec\s*\(|os\.system\s*\(|subprocess\.run\s*\(|\$\(|`.*`'
-
-    matches = re.finditer(pattern, code)
-
-    vulnerabilities = []
-
-    for match in matches:
-        vulnerability = {
-            'type': 'Code Injection',
-            'pattern': match.group(),
-            'line_number': code.count('\n', 0, match.start()) + 1
-        }
-        vulnerabilities.append(vulnerability)
-
-    return vulnerabilities
-
-
-def find_xss_vulnerabilities(code):
-    pattern = r'<script>.*</script>|<img.*src=.*onerror=.*>'
-
-    matches = re.finditer(pattern, code)
-
-    vulnerabilities = []
-
-    for match in matches:
-        vulnerability = {
-            'type': 'XSS (Cross-Site Scripting)',
-            'pattern': match.group(),
-            'line_number': code.count('\n', 0, match.start()) + 1
-        }
-        vulnerabilities.append(vulnerability)
-
-    return vulnerabilities
-
-def find_sql_injection_vulnerabilities(code):
-    pattern = r'SELECT\s+\*|DROP\s+TABLE|DELETE\s+FROM'
-
-    matches = re.finditer(pattern, code, re.IGNORECASE)
-
-    vulnerabilities = []
-
-    for match in matches:
-        vulnerability = {
-            'type': 'SQL Injection',
-            'pattern': match.group(),
-            'line_number': code.count('\n', 0, match.start()) + 1
-        }
-        vulnerabilities.append(vulnerability)
-
-    return vulnerabilities
-
-def find_vulnerabilities(code):
-    vulnerabilities = []
-
-    vulnerabilities += find_code_injection_vulnerabilities(code)
-
-    vulnerabilities += find_xss_vulnerabilities(code)
-
-    vulnerabilities += find_sql_injection_vulnerabilities(code)
-
-    return vulnerabilities
-
-def fuzz_code(code):
-
-    for _ in range(10):  
-        with atheris.Mutator() as mutator:
-            test_case = mutator.fuzz()
-            vulnerabilities = find_vulnerabilities(test_case)
-            if vulnerabilities:
-                print("Vulnerabilidades encontradas:")
-                for vulnerability in vulnerabilities:
-                    print("- Tipo:", vulnerability['type'])
-                    print("- Padrão:", vulnerability['pattern'])
-                    print("- Linha:", vulnerability['line_number'])
-                print("----------------------------------------")
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        image_path = os.path.join(script_dir, "img/sentinela.png")
+        self.image = Image.open(image_path)
+        self.image = self.image.convert("RGBA")
+        data = self.image.getdata()
+        new_data = []
+        for item in data:
+            if item[:3] == (255, 255, 255):
+                new_data.append((255, 255, 255, 0))
             else:
-                print("Nenhuma vulnerabilidade encontrada.")
-            print("----------------------------------------")
+                new_data.append(item)
+        self.image.putdata(new_data)
+        self.photo = ImageTk.PhotoImage(self.image)
 
-def open_file():
+        self.image_label = tk.Label(self.window, image=self.photo, bg="#1c2936")
+        self.image_label.image = self.photo
+        self.image_label.pack(pady=10)
 
-    option = simpledialog.askstring("Escolha uma opção", "1 - Analisar arquivo\n2 - Analisar programa digitado")
+    def open_file(self):
+        option = simpledialog.askstring("Escolha uma opção", "1 - Analisar arquivo")
+        if option == '1':
+            file_path = filedialog.askopenfilename()
+            if file_path:
+                with open(file_path, "r") as f:
+                    code = f.read()
+                    vulnerabilities = self.find_vulnerabilities(code)
+                    if vulnerabilities:
+                        self.display_vulnerabilities(file_path, vulnerabilities)
+                    else:
+                        self.display_no_vulnerabilities(file_path)
 
-    if option == '1':
-        file_path = filedialog.askopenfilename()
-        if file_path:
-            with open(file_path, "r") as f:
-                code = f.read()
-                vulnerabilities = find_vulnerabilities(code)
+    def display_vulnerabilities(self, file_path, vulnerabilities):
+        self.result_text.delete(1.0, tk.END)
+        self.result_text.insert(tk.END, f"Vulnerabilidades encontradas no arquivo: {file_path}\n")
+        for vulnerability in vulnerabilities:
+            self.result_text.insert(tk.END, f"- Tipo: {vulnerability['type']}\n")
+            self.result_text.insert(tk.END, f"- Padrão: {vulnerability['pattern']}\n")
+            self.result_text.insert(tk.END, f"- Linha: {vulnerability['line_number']}\n")
+        self.result_text.insert(tk.END, "----------------------------------------\n")
+
+    def display_no_vulnerabilities(self, file_path):
+        self.result_text.delete(1.0, tk.END)
+        self.result_text.insert(tk.END, f"Nenhuma vulnerabilidade encontrada no arquivo: {file_path}\n")
+        self.result_text.insert(tk.END, "----------------------------------------\n")
+
+    def find_code_injection_vulnerabilities(self, code):
+        pattern = r'eval\s*\(|exec\s*\(|os\.system\s*\(|subprocess\.run\s*\(|\$\(|`.*`'
+        matches = re.finditer(pattern, code)
+        vulnerabilities = []
+        for match in matches:
+            vulnerability = {
+                'type': 'Code Injection',
+                'pattern': match.group(),
+                'line_number': code.count('\n', 0, match.start()) + 1
+            }
+            vulnerabilities.append(vulnerability)
+        return vulnerabilities
+
+    def find_xss_vulnerabilities(self, code):
+        pattern = r'<script>.*</script>|<img.*src=.*onerror=.*>'
+        matches = re.finditer(pattern, code)
+        vulnerabilities = []
+        for match in matches:
+            vulnerability = {
+                'type': 'XSS (Cross-Site Scripting)',
+                'pattern': match.group(),
+                'line_number': code.count('\n', 0, match.start()) + 1
+            }
+            vulnerabilities.append(vulnerability)
+        return vulnerabilities
+
+    def find_sql_injection_vulnerabilities(self, code):
+        pattern = r'SELECT\s+\*|DROP\s+TABLE|DELETE\s+FROM'
+        matches = re.finditer(pattern, code, re.IGNORECASE)
+        vulnerabilities = []
+        for match in matches:
+            vulnerability = {
+                'type': 'SQL Injection',
+                'pattern': match.group(),
+                'line_number': code.count('\n', 0, match.start()) + 1
+            }
+            vulnerabilities.append(vulnerability)
+        return vulnerabilities
+
+    def find_vulnerabilities(self, code):
+        vulnerabilities = []
+        vulnerabilities += self.find_code_injection_vulnerabilities(code)
+        vulnerabilities += self.find_xss_vulnerabilities(code)
+        vulnerabilities += self.find_sql_injection_vulnerabilities(code)
+        return vulnerabilities
+
+    def fuzz_code(self, code):
+        for _ in range(10):
+            with atheris.Mutator() as mutator:
+                test_case = mutator.fuzz()
+                vulnerabilities = self.find_vulnerabilities(test_case)
                 if vulnerabilities:
-                    result_text.delete(1.0, tk.END)
-                    result_text.insert(tk.END, f"Vulnerabilidades encontradas no arquivo: {file_path}\n")
+                    logging.info("Vulnerabilidades encontradas:")
                     for vulnerability in vulnerabilities:
-                        result_text.insert(tk.END, f"- Tipo: {vulnerability['type']}\n")
-                        result_text.insert(tk.END, f"- Padrão: {vulnerability['pattern']}\n")
-                        result_text.insert(tk.END, f"- Linha: {vulnerability['line_number']}\n")
-                    result_text.insert(tk.END, "----------------------------------------\n")
+                        logging.info("- Tipo:", vulnerability['type'])
+                        logging.info("- Padrão:", vulnerability['pattern'])
+                        logging.info("- Linha:", vulnerability['line_number'])
+                    logging.info("----------------------------------------")
                 else:
-                    result_text.delete(1.0, tk.END)
-                    result_text.insert(tk.END, f"Nenhuma vulnerabilidade encontrada no arquivo: {file_path}\n")
-                    result_text.insert(tk.END, "----------------------------------------\n")
-    elif option == '2':
-        code = simpledialog.askstring("Analisar programa digitado", "Digite o programa:")
-        if code:
-            vulnerabilities = find_vulnerabilities(code)
-            if vulnerabilities:
-                result_text.delete(1.0, tk.END)
-                result_text.insert(tk.END, "Vulnerabilidades encontradas no programa:\n")
-                for vulnerability in vulnerabilities:
-                    result_text.insert(tk.END, f"- Tipo: {vulnerability['type']}\n")
-                    result_text.insert(tk.END, f"- Padrão: {vulnerability['pattern']}\n")
-                    result_text.insert(tk.END, f"- Linha: {vulnerability['line_number']}\n")
-                result_text.insert(tk.END, "----------------------------------------\n")
-            else:
-                result_text.delete(1.0, tk.END)
-                result_text.insert(tk.END, "Nenhuma vulnerabilidade encontrada no programa.\n")
-                result_text.insert(tk.END, "----------------------------------------\n")
-    else:
-        result_text.delete(1.0, tk.END)
-        result_text.insert(tk.END, "Opção inválida.\n")
+                    logging.info("Nenhuma vulnerabilidade encontrada.")
+                logging.info("----------------------------------------")
 
+    def run(self):
+        self.window.mainloop()
 
-window = tk.Tk()
-window.title("Code Sentinel")
-window.geometry("500x500")
-window.configure(bg="#1c2936")  
-
-image = Image.open("img/sentinela.png")
-image = image.convert("RGBA")
-data = image.getdata()
-new_data = []
-for item in data:
-
-    if item[:3] == (255, 255, 255):
-        new_data.append((255, 255, 255, 0))  
-    else:
-        new_data.append(item)
-image.putdata(new_data)
-photo = ImageTk.PhotoImage(image)
-
-image_label = tk.Label(window, image=photo, bg="#1c2936")
-image_label.image = photo
-image_label.pack(pady=10)  
-
-style = ThemedStyle(window)
-style.set_theme("clam")
-
-style = ttk.Style(window)
-style.configure("TButton",
-                background="black",
-                foreground="white",
-)
-
-file_button = ttk.Button(window, text="Anexar Arquivo", command=open_file, style="TButton")
-file_button.pack()
-
-result_text = tk.Text(window)
-result_text.pack()
-
-window.mainloop()
+if __name__ == "__main__":
+    sentinel = CodeSentinel()
+    sentinel.run()
