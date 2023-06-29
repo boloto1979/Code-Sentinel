@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 
 supported_extensions = ['.py', '.java', '.js', '.c', '.cpp', '.rb', '.js', '.html', '.php']
 
-from vulnerability_analyzer import find_vulnerabilities
+from vulnerabilities.vulnerability_analyzer import find_vulnerabilities
 
 class CodeSentinel:
     def __init__(self):
