@@ -1,14 +1,15 @@
 import re
 
+xss_pattern = re.compile(r'<script>.*?</script>|<img.*?src=.*?onerror=.*?>')
+
 def find_xss_vulnerabilities(code):
-    pattern = r'<script>.*</script>|<img.*src=.*onerror=.*>'
-    matches = re.finditer(pattern, code)
     vulnerabilities = []
+    matches = xss_pattern.findall(code)
     for match in matches:
         vulnerability = {
             'type': 'XSS (Cross-Site Scripting)',
-            'pattern': match.group(),
-            'line_number': code.count('\n', 0, match.start()) + 1
+            'pattern': match,
+            'line_number': code.count('\n', 0, code.index(match)) + 1
         }
         vulnerabilities.append(vulnerability)
     return vulnerabilities

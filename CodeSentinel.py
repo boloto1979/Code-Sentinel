@@ -37,7 +37,7 @@ class CodeSentinel:
         self.loading_label.pack()
 
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        image_path = os.path.join(script_dir, "img/sentinela.png")
+        image_path = os.path.join(script_dir, "layout/img/sentinela.png")
         self.image = Image.open(image_path)
         self.image = self.image.convert("RGBA")
         data = self.image.getdata()
@@ -131,7 +131,7 @@ class CodeSentinel:
         return vulnerabilities
 
     def find_xss_vulnerabilities(self, code):
-        pattern = r'<script>.*</script>|<img.*src=.*onerror=.*>'
+        pattern = re.compile(r'<script>.*?</script>|<img.*?src=.*?onerror=.*?>')
         matches = re.finditer(pattern, code)
         vulnerabilities = []
         for match in matches:
