@@ -1,41 +1,61 @@
 # Code Sentinel
-![Demonstration](./layout/img/sentinela.png)
-<div style="position:relative;">This is a code vulnerability analysis program capable of finding code injection, XSS and SQL injection vulnerabilities in source code files. It uses Python's re, tkinter, filedialog, simpledialog, ttk, PIL and ThemedStyle libraries to create a graphical interface and allow user interaction.</div>
+    ![Demonstration](./layout/img/the-sentinel.jpg)
+Code Sentinel is a Python application that analyzes code files for vulnerabilities. It helps identify potential security issues such as code injection, cross-site scripting (XSS), SQL injection, CSRF (Cross-Site Request Forgery), and SSRF (Server-Side Request Forgery).
+
+## Features
+- Supports various programming languages including Python, Java, JavaScript, C, C++, Ruby, HTML, and PHP.
+- Analyzes code files for vulnerabilities.
+- Displays vulnerability details including type, pattern, and line number.
+- Provides a user-friendly graphical interface for file selection and displaying results.
 
 ## Installation
-It is not necessary to install any additional packages to run the program, as it only uses standard Python libraries.
+To use Code Sentinel, follow the steps below:
 
-The program's executable file can be found in the project's dist folder, inside a subfolder named Sentinel.
+1. Clone the repository:
+```
+git clone https://github.com/Sentinel-vulnerability/Code-Sentinel.git
+```
+2. Install the required dependencies:
+```
+pip install re
+pip install tkinter
+pip install Pillow
+pip install ttkthemes
+pip install atheris
+```
+## Usage
+To run Code Sentinel, execute the following command:
+```
+python3 CodeSentinel.py or python3 sentinel.py
+```
+The Code Sentinel window will appear, allowing you to perform the following actions:
+- Click the "Anexar Arquivo" (Attach File) button to select a code file for analysis.
+- Once the file is selected, Code Sentinel will analyze it for vulnerabilities.
+- If vulnerabilities are found, they will be displayed in the application window, showing the type, pattern, and line number of each vulnerability.
+- If no vulnerabilities are found, a message indicating this will be displayed.
 
-## How to use
-When opening the program, the user can choose between two options: analyze a file or type a program for analysis.
+Please note that Code Sentinel supports the following file extensions: `.py`, `.java`, `.js`, `.c`, `.cpp`, `.html`, and `.php`.
 
-## Analyze file
-If this option is chosen, the program will open a file selection window for the user to choose the file he wants to analyze. The program will then analyze the file and display the result in the main window, listing all the vulnerabilities found in the source code.
+## Vulnerability Detection
+Code Sentinel detects the following types of vulnerabilities:
+- Code Injection: It searches for patterns such as eval(, exec(, os.system(, subprocess.run(, $(, and `.*` in the code.
+- XSS (Cross-Site Scripting): It looks for patterns like <script>...</script> and <img...src=...onerror=...>.
+- SQL Injection: It identifies patterns such as SELECT *, DROP TABLE, and DELETE FROM in the code (case-insensitive).
+- CSRF (Cross-Site Request Forgery): This vulnerability detection is not implemented yet.
+- SSRF (Server-Side Request Forgery): This vulnerability detection is not implemented yet.
 
-## Analyze typed program
-If this option is chosen, the user must type the source code he wants to analyze in the text box displayed in the main window. The program will then analyze the source code and display the result in the main window, listing all the vulnerabilities found in the code.
+Please note that the CSRF and SSRF vulnerability detections are not yet implemented in the current version of Code Sentinel.
 
-## How it works
-The program searches for files with supported extensions in the folder specified in the code, which contains the list of supported extensions (supported_extensions) and the path variable that stores the folder path. Then, for each file found, the program uses the magic library to determine the file type. If the file type is text/, the program uses the bandit tool to detect security vulnerabilities in the code. Otherwise, the program displays a message stating that it is unable to scan the file.
+## Contributions
+Contributions to Code Sentinel are welcome! If you would like to contribute, please follow these steps:
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Develop and test your changes.
+4. Commit your changes and push them to your fork.
+5. Submit a pull request explaining your changes.
 
-To detect code injection, XSS and SQL injection vulnerabilities, the program uses regular expressions to search for patterns in the source code. The find_code_injection_vulnerabilities() function searches for patterns that can be used to execute arbitrary code, such as the eval(), exec(), os.system() and subprocess.run() functions. The find_xss_vulnerabilities() function looks for patterns that can be used to run malicious scripts in web browsers, such as <script> and <img> tags with src and onerror attributes. The find_sql_injection_vulnerabilities() function searches for patterns that can be used to inject malicious SQL commands into databases, such as SELECT, DROP TABLE and DELETE FROM keywords. All functions return a list of dictionaries with information about the vulnerabilities found, such as the type of vulnerability, the pattern found and the source code line where the vulnerability was detected.
+Also, if you want to be part of the project and organization, please contact me: ``` pedro.lima1979@hotmail.com```
 
-The find_vulnerabilities() function uses these three functions to search for vulnerabilities of all types after searching for vulnerabilities, the find_vulnerabilities() function stores them in a list and returns that list.
-
-The main() function then takes this list of vulnerabilities and displays them on the screen for the user, along with a warning if no vulnerabilities were found or if an error occurred during runtime.
-
-It is important to remember that this is just a simplified example of a security program. In practice, there are many other types of vulnerabilities that can be exploited and many other techniques that can be used to find them. In addition, it is essential to always keep the program up to date and test it frequently to ensure system security.
-
-Finally, it is important to highlight that information security is a critical issue that must be taken seriously by all companies and organizations. Investing in technologies and professionals specialized in security is essential to guarantee the protection of data and confidential information.
-
-## Limitations
-The program only supports detection of the vulnerabilities mentioned above and text files. Binary files will not be analyzed.
-
-## Additional notes
-The program uses the bandit package to detect vulnerabilities in text files. Make sure bandit is installed on your system before using the program.
-
-
-
-
+## License
+Please read the project license [Link](https://github.com/Sentinel-vulnerability/.github/blob/main/LICENSE.md).
 
