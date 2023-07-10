@@ -157,12 +157,31 @@ class CodeSentinel:
         return vulnerabilities
 
     def find_csrf_vulnerabilities(self, code):
-        # Implemente a detecção de vulnerabilidades CSRF aqui
-        return []
+        pattern = r'(?:\b|_)csrf(?:\b|_)|CSRFToken|anti_csrf_token|csrfmiddlewaretoken'
+        matches = re.finditer(pattern, code, re.IGNORECASE)
+        vulnerabilities = []
+        for match in matches:
+            vulnerability = {
+                'type': 'CSRF (Cross-Site Request Forgery)',
+                'pattern': match.group(),
+                'line_number': code.count('\n', 0, match.start()) + 1
+            }
+            vulnerabilities.append(vulnerability)
+        return vulnerabilities
 
     def find_ssrf_vulnerabilities(self, code):
-        # Implemente a detecção de vulnerabilidades SSRF aqui
-        return []
+       pattern = r'requests\s*\.\s*(?:get|post|head|put|patch|delete)|' \
+                 r'\b(urllib|httplib|http.client)\s*\.\s*(?:urlopen|request)'
+       matches = re.finditer(pattern, code)
+       vulnerabilities = []
+       for match in matches:
+           vulnerability = {
+               'type': 'SSRF (Server-Side Request Forgery)',
+               'pattern': match.group(),
+               'line_number': code.count('\n', 0, match.start()) + 1
+           }
+           vulnerabilities.append(vulnerability)
+       return vulnerabilities
 
     def find_vulnerabilities(self, code):
         vulnerabilities = []
@@ -179,3 +198,4 @@ class CodeSentinel:
 if __name__ == "__main__":
     sentinel = CodeSentinel()
     sentinel.run()
+    
