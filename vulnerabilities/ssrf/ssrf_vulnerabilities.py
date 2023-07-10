@@ -13,3 +13,4 @@ def find_ssrf_vulnerabilities(code):
            }
            vulnerabilities.append(vulnerability)
        return vulnerabilities
+       
