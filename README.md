@@ -1,5 +1,5 @@
 # Code Sentinel
-    ![Demonstration](./layout/img/the-sentinel.jpg)
+![Demonstration](./layout/img/the-sentinel.jpg) <br><br>
 Code Sentinel is a Python application that analyzes code files for vulnerabilities. It helps identify potential security issues such as code injection, cross-site scripting (XSS), SQL injection, CSRF (Cross-Site Request Forgery), and SSRF (Server-Side Request Forgery).
 
 ## Features
