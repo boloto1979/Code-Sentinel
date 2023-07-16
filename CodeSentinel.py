@@ -31,7 +31,7 @@ class CodeSentinel:
                              foreground="white",
                              )
         self.file_button = ttk.Button(self.window, text="Anexar Arquivo", command=self.analyze_file, style="TButton")
-        self.file_button.pack(pady=10)
+        self.file_button.pack(pady=8)
 
         self.loading_label = tk.Label(self.window, text="", fg="white", bg="#1c2936")
         self.loading_label.pack()
@@ -52,7 +52,7 @@ class CodeSentinel:
 
         self.image_label = tk.Label(self.window, image=self.photo, bg="#1c2936")
         self.image_label.image = self.photo
-        self.image_label.pack(pady=10)
+        self.image_label.pack(pady=8)
 
     def analyze_file(self):
         file_path = filedialog.askopenfilename()
@@ -183,6 +183,32 @@ class CodeSentinel:
            vulnerabilities.append(vulnerability)
        return vulnerabilities
 
+    def find_rfi_vulnerabilities(self, code):
+        pattern = r'include\s*[\'"](http|https)://'
+        matches = re.finditer(pattern, code, re.IGNORECASE)
+        vulnerabilities = []
+        for match in matches:
+            vulnerability = {
+                'type': 'RFI (Remote File Inclusion)',
+                'pattern': match.group(),
+                'line_number': code.count('\n', 0, match.start()) + 1
+            }
+            vulnerabilities.append(vulnerability)
+        return vulnerabilities
+
+    def find_lfi_vulnerabilities(self, code):
+        pattern = r'include\s*[\'"]\.\./|require\s*[\'"]\.\./|include_once\s*[\'"]\.\./|require_once\s*[\'"]\.\./'
+        matches = re.finditer(pattern, code, re.IGNORECASE)
+        vulnerabilities = []
+        for match in matches:
+            vulnerability = {
+                'type': 'LFI (Local File Inclusion)',
+                'pattern': match.group(),
+                'line_number': code.count('\n', 0, match.start()) + 1
+            }
+            vulnerabilities.append(vulnerability)
+        return vulnerabilities
+
     def find_vulnerabilities(self, code):
         vulnerabilities = []
         vulnerabilities += self.find_code_injection_vulnerabilities(code)
@@ -190,6 +216,8 @@ class CodeSentinel:
         vulnerabilities += self.find_sql_injection_vulnerabilities(code)
         vulnerabilities += self.find_csrf_vulnerabilities(code)
         vulnerabilities += self.find_ssrf_vulnerabilities(code)
+        vulnerabilities += self.find_rfi_vulnerabilities(code)
+        vulnerabilities += self.find_lfi_vulnerabilities(code)
         return vulnerabilities
 
     def run(self):

@@ -1,0 +1,6 @@
+# requirements.txt
+
+regex
+Pillow
+ttkthemes
+atheris
