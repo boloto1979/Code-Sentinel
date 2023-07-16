@@ -1,3 +1,0 @@
-dicionar duas análises estáticas mais avançadas: a detecção de vulnerabilidades de Inclusão de Arquivos Remotos (Remote File Inclusion - RFI) e a detecção de vulnerabilidades de Inclusão de Arquivos Locais (Local File Inclusion - LFI).
-
-implementamos os métodos find_rfi_vulnerabilities e find_lfi_vulnerabilities para procurar padrões que indiquem vulnerabilidades de Inclusão de Arquivos Remotos (RFI) e Inclusão de Arquivos Locais (LFI), respectivamente. Essas vulnerabilidades podem permitir que um atacante inclua arquivos externos, explorando parâmetros de inclusão de arquivos em funções como include, require, include_once e require_once.

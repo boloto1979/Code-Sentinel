@@ -16,6 +16,9 @@ To use Code Sentinel, follow the steps below:
 git clone https://github.com/Sentinel-vulnerability/Code-Sentinel.git
 ```
 2. Install the required dependencies:
+
+start ./code_sentinel.sh and authorize the installation of dependencies
+
 ```
 pip install re
 pip install tkinter
@@ -26,7 +29,7 @@ pip install atheris
 ## Usage
 To run Code Sentinel, execute the following command:
 ```
-python3 CodeSentinel.py or python3 sentinel.py
+./code_sentinel.sh or python3 sentinel.py
 ```
 The Code Sentinel window will appear, allowing you to perform the following actions:
 - Click the "Anexar Arquivo" (Attach File) button to select a code file for analysis.
@@ -41,8 +44,8 @@ Code Sentinel detects the following types of vulnerabilities:
 - Code Injection: It searches for patterns such as eval(, exec(, os.system(, subprocess.run(, $(, and `.*` in the code.
 - XSS (Cross-Site Scripting): It looks for patterns like <script>...</script> and <img...src=...onerror=...>.
 - SQL Injection: It identifies patterns such as SELECT *, DROP TABLE, and DELETE FROM in the code (case-insensitive).
-- CSRF (Cross-Site Request Forgery): This vulnerability detection is not implemented yet.
-- SSRF (Server-Side Request Forgery): This vulnerability detection is not implemented yet.
+- CSRF (Cross-Site Request Forgery). 
+- SSRF (Server-Side Request Forgery).
 
 Please note that the CSRF and SSRF vulnerability detections are not yet implemented in the current version of Code Sentinel.
 
