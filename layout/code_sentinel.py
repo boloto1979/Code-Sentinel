@@ -31,7 +31,7 @@ class CodeSentinel:
                              background="black",
                              foreground="white",
                              )
-        self.file_button = ttk.Button(self.window, text="Anexar Arquivo", command=self.analyze_file, style="TButton")
+        self.file_button = ttk.Button(self.window, text="Attach file", command=self.analyze_file, style="TButton")
         self.file_button.pack(pady=10)
 
         self.loading_label = tk.Label(self.window, text="", fg="white", bg="#1c2936")
@@ -74,7 +74,7 @@ class CodeSentinel:
 
                 self.hide_loading()
             else:
-                self.display_error("Arquivo inválido")
+                self.display_error("invalid file")
 
     def validate_file(self, file_path):
         if os.path.isfile(file_path) and file_path.lower().endswith(tuple(supported_extensions)):
@@ -82,15 +82,15 @@ class CodeSentinel:
         return False
 
     def display_vulnerabilities(self, file_path, vulnerabilities):
-        self.result_text.insert(tk.END, f"Vulnerabilidades encontradas no arquivo: {file_path}\n")
+        self.result_text.insert(tk.END, f"Vulnerabilities found in the file: {file_path}\n")
         for vulnerability in vulnerabilities:
-            self.result_text.insert(tk.END, f"- Tipo: {vulnerability['type']}\n")
-            self.result_text.insert(tk.END, f"- Padrão: {vulnerability['pattern']}\n")
-            self.result_text.insert(tk.END, f"- Linha: {vulnerability['line_number']}\n")
+            self.result_text.insert(tk.END, f"- Type: {vulnerability['type']}\n")
+            self.result_text.insert(tk.END, f"- Standard: {vulnerability['pattern']}\n")
+            self.result_text.insert(tk.END, f"- Line: {vulnerability['line_number']}\n")
         self.result_text.insert(tk.END, "----------------------------------------\n")
 
     def display_no_vulnerabilities(self, file_path):
-        self.result_text.insert(tk.END, f"Nenhuma vulnerabilidade encontrada no arquivo: {file_path}\n")
+        self.result_text.insert(tk.END, f"No vulnerability found in the file: {file_path}\n")
         self.result_text.insert(tk.END, "----------------------------------------\n")
 
     def display_error(self, message):
@@ -98,19 +98,19 @@ class CodeSentinel:
         self.result_text.insert(tk.END, "\n")
 
     def show_loading(self):
-        self.loading_label.config(text="Analisando arquivo")
+        self.loading_label.config(text="analyzing file")
         self.window.update()
         time.sleep(0.5)
 
-        self.loading_label.config(text="Analisando arquivo .")
+        self.loading_label.config(text="analyzing file .")
         self.window.update()
         time.sleep(0.5)
 
-        self.loading_label.config(text="Analisando arquivo . .")
+        self.loading_label.config(text="analyzing file . .")
         self.window.update()
         time.sleep(0.5)
 
-        self.loading_label.config(text="Analisando arquivo . . .")
+        self.loading_label.config(text="analyzing file . . .")
         self.window.update()
         time.sleep(0.5)
 
