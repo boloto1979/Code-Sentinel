@@ -32,8 +32,8 @@ if ! command -v python3 &>/dev/null; then
     exit 1
 fi
 
-if [ ! -f "CodeSentinel.py" ]; then
-    echo "Error: CodeSentinel.py file not found. Make sure the file exists in the current directory."
+if [ ! -f "sentinel.py" ]; then
+    echo "Error: sentinel.py file not found. Make sure the file exists in the current directory."
     exit 1
 fi
 
