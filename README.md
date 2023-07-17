@@ -62,4 +62,3 @@ Also, if you want to be part of the project and organization, please contact me:
 
 ## License
 Please read the project license [Link](https://github.com/Sentinel-vulnerability/.github/blob/main/LICENSE.md).
-
