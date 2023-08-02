@@ -13,7 +13,7 @@ To use Code Sentinel, follow the steps below:
 
 1. Clone the repository:
 ```
-git clone https://github.com/Sentinel-vulnerability/Code-Sentinel.git
+git clone https://github.com/boloto1979/Code-Sentinel.git
 ```
 2. Install the required dependencies:
 
@@ -21,13 +21,11 @@ git clone https://github.com/Sentinel-vulnerability/Code-Sentinel.git
 pip install -r requirements.txt
 ```
 
-
 ```
 pip install re
 pip install tkinter
 pip install Pillow
 pip install ttkthemes
-pip install atheris
 ```
 ## Usage
 To run Code Sentinel, execute the following command:
