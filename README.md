@@ -62,6 +62,3 @@ Contributions to Code Sentinel are welcome! If you would like to contribute, ple
 5. Submit a pull request explaining your changes.
 
 Also, if you want to be part of the project and organization, please contact me: ``` pedro.lima1979@hotmail.com```
-
-## License
-Please read the project license [Link](https://github.com/Sentinel-vulnerability/.github/blob/main/LICENSE.md).
