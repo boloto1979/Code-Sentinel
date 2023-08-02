@@ -1,33 +1,21 @@
-Code Sentinel Custom License
+MIT License
 
-Version 1.0, 30/06/2022
+Copyright (c) 2023 Code-Sentinel
 
-This license applies to the Code Sentinel project and is intended to protect your copyright and encourage contribution.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Permissions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-1. You may use, copy, and modify the Code Sentinel source code for learning, testing, and contributing purposes.
-
-Restrictions:
-
-1. Distribution of Code Sentinel source code without prior written permission of the copyright holder is prohibited.
-
-2. Use of Code Sentinel source code for commercial purposes without prior written permission from the copyright holder is prohibited.
-
-Contributions:
-
-1. You are encouraged to contribute to the Code Sentinel project by following the process outlined in the "Contributions" section of the README.md.
-
-2. By contributing to the Code Sentinel project, you grant the copyright holder a non-exclusive license to use, reproduce and distribute your contributions.
-
-3. The copyright holder reserves the right to accept or reject contributions, as well as to make modifications to contributions to conform to the project's standards of quality and integrity.
-
-Disclaimer:
-
-1. Code Sentinel is provided "as is" without warranties of any kind, either express or implied. The copyright holder is not responsible for any damages arising from the use of Code Sentinel.
-
-2. The copyright holder is not responsible for any vulnerabilities or security errors that may be missed by Code Sentinel.
-
-This license is subject to current legislation and may be updated or modified at any time by the copyright holder.
-
-© [Pedro Lima - boloto1979] All rights reserved.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

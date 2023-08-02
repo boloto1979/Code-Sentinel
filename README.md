@@ -17,7 +17,10 @@ git clone https://github.com/Sentinel-vulnerability/Code-Sentinel.git
 ```
 2. Install the required dependencies:
 
-start ./code_sentinel.sh and authorize the installation of dependencies
+```
+pip install -r requirements.txt
+```
+
 
 ```
 pip install re
@@ -29,7 +32,7 @@ pip install atheris
 ## Usage
 To run Code Sentinel, execute the following command:
 ```
-./code_sentinel.sh or python3 sentinel.py
+python3 CodeSentinel.py
 ```
 The Code Sentinel window will appear, allowing you to perform the following actions:
 - Click the "Anexar Arquivo" (Attach File) button to select a code file for analysis.
