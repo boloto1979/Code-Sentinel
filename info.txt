@@ -1,0 +1,1 @@
+if you have problems with ttkthemes and Pillow, try `sudo apt-get install python3-tk` and `pip3 install ttkthemes`. Pillow: `pip3 install --upgrade Pillow` 
